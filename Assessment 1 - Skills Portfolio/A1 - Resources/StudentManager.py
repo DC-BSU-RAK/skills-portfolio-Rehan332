@@ -1,6 +1,15 @@
 from tkinter import *
 from tkinter import messagebox, ttk
 from PIL import Image, ImageTk
+import os
+
+# ===================== FIX WORKING DIRECTORY =====================
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+os.chdir(BASE_DIR)
+
+def get_path(filename):
+    return os.path.join(BASE_DIR, filename)
+
 
 # Initialize root window
 root = Tk()
@@ -20,7 +29,7 @@ def switch_frame(frame):
 def read_student_data():
     """Read and process student data from file"""
     try:
-        with open("studentMarks.txt", "r") as file:
+        with open(get_path("studentMarks.txt"), "r") as file:
             lines = file.readlines()
         
         lines = [line.strip() for line in lines if line.strip()]
@@ -97,7 +106,7 @@ home_frame = Frame(root, bg="#2C3E50")
 home_frame.place(relwidth=1, relheight=1)
 
 try:
-    bg_home = Image.open("student_home_bg.jpg")
+    bg_home = Image.open(get_path("student_home_bg.jpg"))
     bg_home = bg_home.resize((700, 500))
     bg_photo_home = ImageTk.PhotoImage(bg_home)
     Label(home_frame, image=bg_photo_home).place(relwidth=1, relheight=1)
@@ -109,7 +118,7 @@ main_menu_frame = Frame(root, bg="#ECF0F1")
 main_menu_frame.place(relwidth=1, relheight=1)
 
 try:
-    bg_main = Image.open("main_menu_bg.jpg")
+    bg_main = Image.open(get_path("main_menu_bg.jpg"))
     bg_main = bg_main.resize((700, 500))
     bg_photo_main = ImageTk.PhotoImage(bg_main)
     Label(main_menu_frame, image=bg_photo_main).place(relwidth=1, relheight=1)
@@ -121,7 +130,7 @@ view_all_frame = Frame(root, bg="#ECF0F1")
 view_all_frame.place(relwidth=1, relheight=1)
 
 try:
-    bg_view = Image.open("view_records_bg.jpg")
+    bg_view = Image.open(get_path("view_records_bg.jpg"))
     bg_view = bg_view.resize((700, 500))
     bg_photo_view = ImageTk.PhotoImage(bg_view)
     Label(view_all_frame, image=bg_photo_view).place(relwidth=1, relheight=1)
@@ -133,7 +142,7 @@ view_individual_frame = Frame(root, bg="#ECF0F1")
 view_individual_frame.place(relwidth=1, relheight=1)
 
 try:
-    bg_individual = Image.open("individual_bg.jpg")
+    bg_individual = Image.open(get_path("individual_bg.jpg"))
     bg_individual = bg_individual.resize((700, 500))
     bg_photo_individual = ImageTk.PhotoImage(bg_individual)
     Label(view_individual_frame, image=bg_photo_individual).place(relwidth=1, relheight=1)
@@ -145,7 +154,7 @@ stats_frame = Frame(root, bg="#ECF0F1")
 stats_frame.place(relwidth=1, relheight=1)
 
 try:
-    bg_stats = Image.open("stats_bg.jpg")
+    bg_stats = Image.open(get_path("stats_bg.jpg"))
     bg_stats = bg_stats.resize((700, 500))
     bg_photo_stats = ImageTk.PhotoImage(bg_stats)
     Label(stats_frame, image=bg_photo_stats).place(relwidth=1, relheight=1)
@@ -157,7 +166,7 @@ extension_frame = Frame(root, bg="#ECF0F1")
 extension_frame.place(relwidth=1, relheight=1)
 
 try:
-    bg_ext = Image.open("extension_bg.jpg")
+    bg_ext = Image.open(get_path("extension_bg.jpg"))
     bg_ext = bg_ext.resize((700, 500))
     bg_photo_ext = ImageTk.PhotoImage(bg_ext)
     Label(extension_frame, image=bg_photo_ext).place(relwidth=1, relheight=1)
@@ -169,7 +178,7 @@ sort_frame = Frame(root, bg="#ECF0F1")
 sort_frame.place(relwidth=1, relheight=1)
 
 try:
-    bg_sort = Image.open("sort_bg.jpg")
+    bg_sort = Image.open(get_path("sort_bg.jpg"))
     bg_sort = bg_sort.resize((700, 500))
     bg_photo_sort = ImageTk.PhotoImage(bg_sort)
     Label(sort_frame, image=bg_photo_sort).place(relwidth=1, relheight=1)
@@ -181,7 +190,7 @@ add_frame = Frame(root, bg="#ECF0F1")
 add_frame.place(relwidth=1, relheight=1)
 
 try:
-    bg_add = Image.open("add_bg.jpg")
+    bg_add = Image.open(get_path("add_bg.jpg"))
     bg_add = bg_add.resize((700, 500))
     bg_photo_add = ImageTk.PhotoImage(bg_add)
     Label(add_frame, image=bg_photo_add).place(relwidth=1, relheight=1)
@@ -193,7 +202,7 @@ delete_frame = Frame(root, bg="#ECF0F1")
 delete_frame.place(relwidth=1, relheight=1)
 
 try:
-    bg_delete = Image.open("delete_bg.jpg")
+    bg_delete = Image.open(get_path("delete_bg.jpg"))
     bg_delete = bg_delete.resize((700, 500))
     bg_photo_delete = ImageTk.PhotoImage(bg_delete)
     Label(delete_frame, image=bg_photo_delete).place(relwidth=1, relheight=1)
@@ -205,7 +214,7 @@ update_frame = Frame(root, bg="#ECF0F1")
 update_frame.place(relwidth=1, relheight=1)
 
 try:
-    bg_update = Image.open("update_bg.jpg")
+    bg_update = Image.open(get_path("update_bg.jpg"))
     bg_update = bg_update.resize((700, 500))
     bg_photo_update = ImageTk.PhotoImage(bg_update)
     Label(update_frame, image=bg_photo_update).place(relwidth=1, relheight=1)

@@ -2,6 +2,12 @@ from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import random
+import os  # <-- added
+
+# ---------------------------
+# Fix folder path always correctly
+# ---------------------------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # full correct folder path
 
 # Initialize root window
 root = Tk()
@@ -13,10 +19,11 @@ root.resizable(False, False)
 def switch_frame(frame):
     frame.tkraise()
 
-# Function to load jokes from the file
+# Function to load jokes from the file safely
 def load_jokes():
     try:
-        with open("randomJokes.txt", "r") as file:
+        filepath = os.path.join(BASE_DIR, "randomJokes.txt")  # FULL PATH
+        with open(filepath, "r") as file:
             jokes = file.readlines()
         return [joke.strip().split('?', 1) for joke in jokes if '?' in joke]
     except FileNotFoundError:
@@ -29,7 +36,7 @@ def show_joke():
     if jokes:
         current_joke = random.choice(jokes)
         setup_label.config(text=current_joke[0] + '?')
-        punchline_label.config(text="Click 'Show Punchline' to reveal the answer!")
+        punchline_label.config(text="")
         punchline_button.config(state=NORMAL)
         show_punchline_indicator.config(text="")
 
@@ -56,32 +63,37 @@ current_joke = None
 home_frame = Frame(root, bg="#2C3E50")
 home_frame.place(relwidth=1, relheight=1)
 
-# Load the background image for home_frame
+task_frame = Frame(root, bg="#ECF0F1")
+task_frame.place(relwidth=1, relheight=1)
+
+# ---------------------------
+# Load BACKGROUND IMAGES (FULL PATH)
+# ---------------------------
+
+# HOME SCREEN BG (image4_3.jpg)
 try:
-    bg_image_home = Image.open("image 4 (3).jpg")
+    bg_path = os.path.join(BASE_DIR, "image4_3.jpg")  # FIXED NAME
+    bg_image_home = Image.open(bg_path)
     bg_image_home = bg_image_home.resize((700, 500))
     bg_photo_home = ImageTk.PhotoImage(bg_image_home)
     bg_label_home = Label(home_frame, image=bg_photo_home)
     bg_label_home.place(relwidth=1, relheight=1)
-except:
-    pass
+except Exception as e:
+    print("Error loading home background:", e)
 
-task_frame = Frame(root, bg="#ECF0F1")
-task_frame.place(relwidth=1, relheight=1)
-
-# Load the background image for task_frame
+# TASK SCREEN BG (image4_2.jpg)
 try:
-    bg_image_task = Image.open("image 4 (2).jpg")
+    bg_path = os.path.join(BASE_DIR, "image4_2.jpg")  # FIXED NAME
+    bg_image_task = Image.open(bg_path)
     bg_image_task = bg_image_task.resize((700, 500))
     bg_photo_task = ImageTk.PhotoImage(bg_image_task)
     bg_label_task = Label(task_frame, image=bg_photo_task)
     bg_label_task.place(relwidth=1, relheight=1)
-except:
-    pass
+except Exception as e:
+    print("Error loading task background:", e)
 
 # ========== HOME FRAME WIDGETS ==========
 
-# Title label with shadow effect
 title_shadow = Label(
     home_frame,
     text="🎭 Joke Telling Assistant 🎭",
@@ -100,7 +112,6 @@ title_label = Label(
 )
 title_label.place(x=120, y=150)
 
-# Subtitle
 subtitle_label = Label(
     home_frame,
     text="Get ready to laugh out loud!",
@@ -110,7 +121,6 @@ subtitle_label = Label(
 )
 subtitle_label.place(x=230, y=210)
 
-# Start button with better styling
 Start_button = Button(
     home_frame,
     text="START",
@@ -127,7 +137,6 @@ Start_button = Button(
 )
 Start_button.place(x=275, y=280)
 
-# Credits
 credits_label = Label(
     home_frame,
     text="Press START to begin your comedy journey!",
@@ -139,7 +148,6 @@ credits_label.place(x=220, y=450)
 
 # ========== TASK FRAME WIDGETS ==========
 
-# Header
 header_label = Label(
     task_frame,
     text="🎤 Joke Time! 🎤",
@@ -149,7 +157,7 @@ header_label = Label(
 )
 header_label.place(x=220, y=20)
 
-# Box for the setup label (joke setup)
+# Joke setup box
 setup_box = Frame(task_frame, bg="#FFFFFF", bd=3, relief="ridge")
 setup_box.place(x=50, y=80, width=600, height=120)
 
@@ -164,16 +172,9 @@ setup_label = Label(
 )
 setup_label.pack(expand=True)
 
-# Indicator for punchline
-show_punchline_indicator = Label(
-    task_frame,
-    text="",
-    font=("Arial", 20),
-    bg="#ECF0F1"
-)
+show_punchline_indicator = Label(task_frame, text="", font=("Arial", 20), bg="#ECF0F1")
 show_punchline_indicator.place(x=330, y=210)
 
-# Box for the punchline label (joke punchline)
 punchline_box = Frame(task_frame, bg="#FFF9E6", bd=3, relief="ridge")
 punchline_box.place(x=50, y=250, width=600, height=100)
 
@@ -188,11 +189,9 @@ punchline_label = Label(
 )
 punchline_label.pack(expand=True)
 
-# Button container frame for better organization
 button_frame = Frame(task_frame, bg="#ECF0F1")
 button_frame.place(x=150, y=370)
 
-# Alexa tell me a joke button
 alexa_button = Button(
     button_frame,
     text="🎲 Alexa tell me a Joke",
@@ -209,7 +208,6 @@ alexa_button = Button(
 )
 alexa_button.grid(row=0, column=0, padx=5)
 
-# Show Punchline button
 punchline_button = Button(
     button_frame,
     text="😂 Show Punchline",
@@ -227,7 +225,6 @@ punchline_button = Button(
 )
 punchline_button.grid(row=0, column=1, padx=5)
 
-# Next Joke button
 next_button = Button(
     button_frame,
     text="⏭️ Next Joke",
@@ -244,11 +241,9 @@ next_button = Button(
 )
 next_button.grid(row=0, column=2, padx=5)
 
-# Bottom button frame
 bottom_button_frame = Frame(task_frame, bg="#ECF0F1")
 bottom_button_frame.place(x=250, y=440)
 
-# Home button
 home_button = Button(
     bottom_button_frame,
     text="🏠 Home",
@@ -265,7 +260,6 @@ home_button = Button(
 )
 home_button.grid(row=0, column=0, padx=5)
 
-# Quit button
 quit_button = Button(
     bottom_button_frame,
     text="❌ Quit",
@@ -282,8 +276,8 @@ quit_button = Button(
 )
 quit_button.grid(row=0, column=1, padx=5)
 
-# Start with the home screen
+# Start with home screen
 switch_frame(home_frame)
 
-# Run the application
+# Run the app
 root.mainloop()
